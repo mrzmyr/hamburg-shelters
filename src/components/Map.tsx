@@ -2,6 +2,7 @@ import { MAPBOX_API_KEY } from '@/config/api';
 import { ApiPlace } from '@/pages/api/places';
 import { forwardRef, RefObject, useMemo } from 'react';
 import MapboxMap, { FullscreenControl, GeolocateControl, MapRef, Marker, NavigationControl } from 'react-map-gl';
+import { useDarkMode } from 'usehooks-ts';
 import { LoadingIndicator } from './LoadingIndicator';
 import Pin from './Pin';
 
@@ -35,6 +36,8 @@ export const Map = forwardRef(function Map({
   onTagAdd: (item: ApiPlace, tagId: string) => void;
   onTagRemove: (item: ApiPlace, tagId: string) => void;
 }, ref: RefObject<MapRef>) {
+
+  const { isDarkMode } = useDarkMode()
 
   const pins = useMemo(() => places?.map((place, index) => (
     <Marker
@@ -102,7 +105,7 @@ export const Map = forwardRef(function Map({
         <MapboxMap
           ref={ref}
           mapboxAccessToken={MAPBOX_API_KEY}
-          mapStyle="mapbox://styles/mapbox/streets-v9"
+          mapStyle={`mapbox://styles/mapbox/${isDarkMode ? 'dark' : 'streets'}-v9`}
           initialViewState={initialViewState}
         >
           <GeolocateControl position="top-left" />
