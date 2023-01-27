@@ -96,7 +96,7 @@ export const Map = forwardRef(function Map({
 
   return (
     <div className="w-full relative h-screen rounded-lg shadow overflow-hidden">
-      <div className={`flex items-center justify-center h-full absolute bg-white/70 top-0 left-0 w-full z-10 pointer-events-none transition-all ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`flex items-center justify-center h-full absolute bg-white/70 dark:bg-black/70 top-0 left-0 w-full z-10 pointer-events-none transition-all ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
         <LoadingIndicator />
       </div>
       <div

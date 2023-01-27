@@ -54,7 +54,7 @@ function Pin({
             ${isActive || isSelected ? 'z-20' : 'scale-100'}
             px-2.5 py-2 shadow-lg
             ${isSelected ? 'scale-105' : ''}
-            bg-white dark:bg-blue-600
+            ${item.properties.checkedIn ? 'bg-green-500 dark:bg-green-600' : 'bg-white dark:bg-blue-600'}
             flex justify-center items-center
           `}
           style={{
@@ -67,7 +67,7 @@ function Pin({
             w-0 h-0
             border-l-[7px] border-l-solid border-l-transparent
             border-r-[7px] border-r-solid border-r-transparent
-            border-t-[5px] border-t-solid ${isActive || isSelected ? 'border-t-white dark:border-t-blue-600' : 'border-t-white dark:border-t-blue-600'}
+            border-t-[5px] border-t-solid ${item.properties.checkedIn ? 'border-t-green-500 dark:border-t-green-600' : 'border-t-white dark:border-t-blue-600'}
           `}
           ></div>
           <span className="text-xl">🏨</span>
@@ -86,7 +86,7 @@ function Pin({
             </div>
           )}
           <div
-            className="font-medium text-base text-black dark:text-white"
+            className="font-medium text-lg text-black dark:text-white"
           >{item.properties.traeger}</div>
         </div>
         <div className="text-base flex items-center text-neutral-700 dark:text-neutral-300 mt-2">

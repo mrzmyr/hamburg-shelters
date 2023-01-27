@@ -3,6 +3,7 @@
 import { Map } from "@/components/Map";
 import { usePlaces } from "@/hooks/usePlaces";
 import { ApiPlace } from "@/pages/api/places";
+import { Github } from "lucide-react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useMemo, useRef, useState } from "react";
 import { MapRef } from "react-map-gl";
@@ -34,12 +35,32 @@ export default function Home() {
     <div
       className="relative h-screen"
     >
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded absolute right-4 top-4 z-50" role="alert">
-          <strong className="font-bold">Something went wrong while fetching the places!</strong>
-          <pre className="block sm:inline">{JSON.stringify(error, null, 2)}</pre>
+      <div
+        className="absolute right-4 top-4 z-50 flex flex-col flex-wrap items-end space-y-2"
+      >
+        <div
+          role="banner"
+          className="bg-white rounded-lg shadow px-3 py-2"
+        >
+          {/* Credits */}
+          <div className="text-md text-gray-800">
+            <a
+              href="https://github.com/mrzmyr/hamburg-shelters"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1 text-gray-800 hover:text-gray-900"
+            >
+              <Github size={17} className="mr-1" />
+              GitHub
+            </a>
+          </div>
         </div>
-      )}
+        {error && (
+          <div className="bg-red-100 border-red-400 text-red-700 px-3 py-2 mt-2 rounded max-w-md" role="alert">
+            <strong className="font-bold">Something went wrong while fetching the places. Please reload the page. 🙏</strong>
+          </div>
+        )}
+      </div>
       <Map
         ref={mapRef}
         origin={origin}
