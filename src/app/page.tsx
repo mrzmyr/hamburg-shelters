@@ -1,91 +1,75 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
+"use client";
 
-const inter = Inter({ subsets: ['latin'] })
+import { Map } from "@/components/Map";
+import { usePlaces } from "@/hooks/usePlaces";
+import { ApiPlace } from "@/pages/api/places";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useMemo, useRef, useState } from "react";
+import { MapRef } from "react-map-gl";
 
 export default function Home() {
+  const {
+    isLoading,
+    data: places,
+    error,
+    toggleTag,
+    toggleCheckIn,
+  } = usePlaces()
+
+  const origin = useMemo(() => ({
+    longitude: 10.00604510984813,
+    latitude: 53.553049693783514
+  }), []);
+
+  const mapRef = useRef<MapRef>(null);
+
+  const [activeItem, setActiveItem] = useState<ApiPlace | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ApiPlace | null>(null);
+
+  const checkIn = (item: ApiPlace) => {
+    toggleCheckIn(item.id);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div
+      className="relative h-screen"
+    >
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded absolute right-4 top-4 z-50" role="alert">
+          <strong className="font-bold">Something went wrong while fetching the places!</strong>
+          <pre className="block sm:inline">{JSON.stringify(error, null, 2)}</pre>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      )}
+      <Map
+        ref={mapRef}
+        origin={origin}
+        places={places?.features}
+        isLoading={isLoading}
+        onPinClick={(item) => {
+          setSelectedItem(item);
+        }}
+        onCheckIn={(item) => {
+          checkIn(item);
+        }}
+        onPinMouseEnter={(item) => {
+          setActiveItem(item);
+        }}
+        onPinMouseLeave={() => {
+          setActiveItem(null);
+          // setActiveItem(null)
+        }}
+        onPopupClose={() => {
+          console.log("close");
+          setSelectedItem(null);
+          setActiveItem(null);
+        }}
+        selectedItem={selectedItem}
+        activeItem={activeItem}
+        onTagClick={(item, tagId) => {
+          console.log("tag click", item, tagId);
+          toggleTag(item.id, tagId);
+        }}
+      />
+    </div>
+  );
 }
