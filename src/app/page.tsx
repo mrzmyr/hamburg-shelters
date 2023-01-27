@@ -65,7 +65,11 @@ export default function Home() {
         }}
         selectedItem={selectedItem}
         activeItem={activeItem}
-        onTagClick={(item, tagId) => {
+        onTagAdd={(item, tagId) => {
+          console.log("tag click", item, tagId);
+          toggleTag(item.id, tagId);
+        }}
+        onTagRemove={(item, tagId) => {
           console.log("tag click", item, tagId);
           toggleTag(item.id, tagId);
         }}

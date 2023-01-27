@@ -16,7 +16,8 @@ export const Map = forwardRef(function Map({
   selectedItem,
   onPopupClose,
   onCheckIn,
-  onTagClick,
+  onTagAdd,
+  onTagRemove,
 }: {
   places: ApiPlace[];
   isLoading: boolean;
@@ -31,7 +32,8 @@ export const Map = forwardRef(function Map({
   };
   onPopupClose: () => void;
   onCheckIn: (item: ApiPlace) => void;
-  onTagClick: (item: ApiPlace, tagId: string) => void;
+  onTagAdd: (item: ApiPlace, tagId: string) => void;
+  onTagRemove: (item: ApiPlace, tagId: string) => void;
 }, ref: RefObject<MapRef>) {
 
   const pins = useMemo(() => places?.map((place, index) => (
@@ -71,13 +73,16 @@ export const Map = forwardRef(function Map({
         }}
         isActive={activeItem?.id === place.id}
         isSelected={selectedItem?.id === place.id}
-        onTagClick={(tagId) => {
-          onTagClick(place, tagId);
+        onTagAdd={(tagId) => {
+          onTagAdd(place, tagId);
+        }}
+        onTagRemove={(tagId) => {
+          onTagRemove(place, tagId);
         }}
       />
     </Marker>
   )),
-    [places, activeItem, selectedItem, onPinClick, onPinMouseEnter, onPinMouseLeave, onPopupClose, onCheckIn, onTagClick]
+    [places, activeItem, selectedItem, onPinClick, onPinMouseEnter, onPinMouseLeave, onPopupClose, onCheckIn, onTagAdd, onTagRemove]
   );
 
   const initialViewState = useMemo(() => ({

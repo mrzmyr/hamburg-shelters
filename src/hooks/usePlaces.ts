@@ -2,7 +2,7 @@ import { TAGS } from './../config/tags';
 import { useLocalStorage } from 'usehooks-ts';
 import { ApiPlaces } from "@/pages/api/places";
 import useSWR from "swr";
-const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const usePlaces = () => {
   const [tags, setTags] = useLocalStorage("tags", {})

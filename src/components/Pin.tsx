@@ -19,7 +19,8 @@ function Pin({
   onMouseLeave,
   onClose,
   onCheckIn,
-  onTagClick,
+  onTagAdd,
+  onTagRemove,
 }: {
   isActive?: boolean;
   isSelected?: boolean;
@@ -29,7 +30,8 @@ function Pin({
   onMouseLeave?: (item: ApiPlace) => void
   onClose: () => void
   onCheckIn: (item: ApiPlace) => void
-  onTagClick: (tag: string) => void
+  onTagAdd: (tagId: string) => void
+  onTagRemove: (tagId: string) => void
 }) {
   return (
     <Popover>
@@ -102,6 +104,9 @@ function Pin({
             <Tag
               key={tag.id}
               tag={tag}
+              onRemove={() => {
+                onTagRemove(tag.id)
+              }}
             />
           ))}
         </div>
@@ -117,16 +122,18 @@ function Pin({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            {TAGS.map((tag) => (
-              <DropdownMenuItem
-                key={tag.id}
-                onClick={() => {
-                  onTagClick(tag.id)
-                }}
-              >
-                {tag.label}
-              </DropdownMenuItem>
-            ))}
+            {TAGS
+              .filter((tag) => !item.properties.tags?.find((t) => t.id === tag.id))
+              .map((tag) => (
+                <DropdownMenuItem
+                  key={tag.id}
+                  onClick={() => {
+                    onTagAdd(tag.id)
+                  }}
+                >
+                  {tag.label}
+                </DropdownMenuItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
         <Button
