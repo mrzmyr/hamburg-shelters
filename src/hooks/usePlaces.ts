@@ -1,14 +1,14 @@
 import { TAGS } from './../config/tags';
 import { useLocalStorage } from 'usehooks-ts';
-import { ApiPlaces } from "@/pages/api/places";
 import useSWR from "swr";
+import { IPlaces } from '@/types';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const usePlaces = () => {
   const [tags, setTags] = useLocalStorage("tags", {})
   const [checkIns, setCheckIns] = useLocalStorage("checkIns", {})
 
-  const { data, error, isLoading } = useSWR<ApiPlaces>(
+  const { data, error, isLoading, isValidating, mutate } = useSWR<IPlaces>(
     "/api/places",
     fetcher
   );
@@ -20,11 +20,6 @@ export const usePlaces = () => {
   };
 
   const addTag = (placeId: string, tagId: string) => {
-    // fetch(`/api/places/${placeId}/tags`, {
-    //   method: "POST",
-    //   body: JSON.stringify({ tag }),
-    // });
-
     setTags({
       ...tags,
       [placeId]: [...(tags[placeId] || []), tagId],
@@ -32,11 +27,6 @@ export const usePlaces = () => {
   };
 
   const removeTag = (placeId: string, tagId: string) => {
-    // fetch(`/api/places/${placeId}/tags`, {
-    //   method: "DELETE",
-    //   body: JSON.stringify({ tag }),
-    // });
-
     setTags({
       ...tags,
       [placeId]: (tags[placeId] || []).filter((t) => t !== tagId),
@@ -89,5 +79,13 @@ export const usePlaces = () => {
     };
   }
 
-  return { data: _data, error, isLoading, addTag, removeTag, toggleTag, toggleCheckIn };
+  return {
+    data: _data,
+    error,
+    mutate,
+    isLoading,
+    isValidating,
+    toggleTag,
+    toggleCheckIn
+  };
 }

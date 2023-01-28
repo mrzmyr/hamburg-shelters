@@ -1,40 +1,37 @@
 import { MAPBOX_API_KEY } from '@/config/api';
-import { ApiPlace } from '@/pages/api/places';
+import { IPlace } from '@/types';
 import { forwardRef, RefObject, useMemo } from 'react';
 import MapboxMap, { FullscreenControl, GeolocateControl, MapRef, Marker, NavigationControl } from 'react-map-gl';
 import { useDarkMode } from 'usehooks-ts';
-import { LoadingIndicator } from './LoadingIndicator';
 import Pin from './Pin';
 
 export const Map = forwardRef(function Map({
   places,
-  isLoading,
   onPinClick,
   onPinMouseEnter,
   onPinMouseLeave,
   activeItem,
   origin,
   selectedItem,
-  onPopupClose,
   onCheckIn,
   onTagAdd,
   onTagRemove,
 }: {
-  places: ApiPlace[];
+  places: IPlace[];
   isLoading: boolean;
-  onPinClick: (item: ApiPlace) => void;
-  onPinMouseEnter: (item: ApiPlace) => void;
-  onPinMouseLeave: (item: ApiPlace) => void;
-  selectedItem: ApiPlace;
-  activeItem: ApiPlace;
+  onPinClick: (item: IPlace) => void;
+  onPinMouseEnter: (item: IPlace) => void;
+  onPinMouseLeave: (item: IPlace) => void;
+  selectedItem: IPlace;
+  activeItem: IPlace;
   origin: {
     longitude: number;
     latitude: number;
   };
   onPopupClose: () => void;
-  onCheckIn: (item: ApiPlace) => void;
-  onTagAdd: (item: ApiPlace, tagId: string) => void;
-  onTagRemove: (item: ApiPlace, tagId: string) => void;
+  onCheckIn: (item: IPlace) => void;
+  onTagAdd: (item: IPlace, tagId: string) => void;
+  onTagRemove: (item: IPlace, tagId: string) => void;
 }, ref: RefObject<MapRef>) {
 
   const { isDarkMode } = useDarkMode()
@@ -62,9 +59,6 @@ export const Map = forwardRef(function Map({
         onClick={() => {
           onPinClick(place);
         }}
-        onClose={() => {
-          onPopupClose();
-        }}
         onMouseEnter={() => {
           onPinMouseEnter(place);
         }}
@@ -84,9 +78,17 @@ export const Map = forwardRef(function Map({
         }}
       />
     </Marker>
-  )),
-    [places, activeItem, selectedItem, onPinClick, onPinMouseEnter, onPinMouseLeave, onPopupClose, onCheckIn, onTagAdd, onTagRemove]
-  );
+  )), [
+    places,
+    activeItem,
+    selectedItem,
+    onPinClick,
+    onPinMouseEnter,
+    onPinMouseLeave,
+    onCheckIn,
+    onTagAdd,
+    onTagRemove
+  ]);
 
   const initialViewState = useMemo(() => ({
     zoom: 10,
@@ -95,10 +97,7 @@ export const Map = forwardRef(function Map({
   }), [origin]);
 
   return (
-    <div className="w-full relative h-screen rounded-lg shadow overflow-hidden">
-      <div className={`flex items-center justify-center h-full absolute bg-white/70 dark:bg-black/70 top-0 left-0 w-full z-10 pointer-events-none transition-all ${isLoading ? 'opacity-100' : 'opacity-0'}`}>
-        <LoadingIndicator />
-      </div>
+    <div className="w-full relative h-screen">
       <div
         className='absolute top-0 left-0 w-full h-full z-0'
       >

@@ -5,10 +5,10 @@ import {
   PopoverTrigger
 } from "@/components/ui/Popover";
 import { TAGS } from "@/config/tags";
-import { ApiPlace } from "@/pages/api/places";
 import { Tag } from "./Tag";
 import { Button } from "./ui/Button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/DropdownMenu";
+import { IPlace } from "@/types";
 
 function Pin({
   isActive,
@@ -17,19 +17,17 @@ function Pin({
   onClick,
   onMouseEnter,
   onMouseLeave,
-  onClose,
   onCheckIn,
   onTagAdd,
   onTagRemove,
 }: {
   isActive?: boolean;
   isSelected?: boolean;
-  item: ApiPlace;
-  onClick?: (item: ApiPlace) => void
-  onMouseEnter?: (item: ApiPlace) => void
-  onMouseLeave?: (item: ApiPlace) => void
-  onClose: () => void
-  onCheckIn: (item: ApiPlace) => void
+  item: IPlace;
+  onClick?: (item: IPlace) => void
+  onMouseEnter?: (item: IPlace) => void
+  onMouseLeave?: (item: IPlace) => void
+  onCheckIn: (item: IPlace) => void
   onTagAdd: (tagId: string) => void
   onTagRemove: (tagId: string) => void
 }) {

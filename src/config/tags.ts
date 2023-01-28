@@ -1,9 +1,6 @@
-export type ITag = {
-  id: string
-  label: string
-}
+import { ITag } from "@/types";
 
-export const TAGS = [
+export const TAGS: ITag[] = [
   {
     id: 'night_open',
     label: '🌌 Nachts geöffnet',
