@@ -3,6 +3,8 @@
 import { useMemo, useRef, useState } from "react";
 import { MapRef } from "react-map-gl";
 
+import { IPlace } from "@/types";
+
 import { Map } from "@/components/Map";
 import { usePlaces } from "@/hooks/usePlaces";
 import { Error } from "@/components/Error";
@@ -10,7 +12,6 @@ import { Credits } from "@/components/Credits";
 import { Loading } from "@/components/Loading";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { IPlace } from "@/types";
 
 export default function Home() {
   const {
@@ -80,11 +81,9 @@ export default function Home() {
         selectedItem={selectedItem}
         activeItem={activeItem}
         onTagAdd={(item, tagId) => {
-          console.log("tag click", item, tagId);
           toggleTag(item.id, tagId);
         }}
         onTagRemove={(item, tagId) => {
-          console.log("tag click", item, tagId);
           toggleTag(item.id, tagId);
         }}
       />

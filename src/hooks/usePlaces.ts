@@ -2,6 +2,7 @@ import { TAGS } from './../config/tags';
 import { useLocalStorage } from 'usehooks-ts';
 import useSWR from "swr";
 import { IPlaces } from '@/types';
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const usePlaces = () => {
