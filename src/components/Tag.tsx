@@ -1,4 +1,4 @@
-import { ITag } from "@/config/tags";
+import { ITag } from "@/types";
 import { X } from "lucide-react";
 
 export const Tag = ({
