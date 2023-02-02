@@ -9,6 +9,7 @@ export default async function handler(
 ) {
   const query = {
     limit: '1000',
+    f: 'json',
   }
 
   const url = new URL(PLACES_URL)
