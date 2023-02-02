@@ -73,11 +73,6 @@ export default function Home() {
         onPinMouseLeave={() => {
           setActiveItem(null);
         }}
-        onPopupClose={() => {
-          console.log("close");
-          setSelectedItem(null);
-          setActiveItem(null);
-        }}
         selectedItem={selectedItem}
         activeItem={activeItem}
         onTagAdd={(item, tagId) => {

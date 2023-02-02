@@ -28,7 +28,6 @@ export const Map = forwardRef(function Map({
     longitude: number;
     latitude: number;
   };
-  onPopupClose: () => void;
   onCheckIn: (item: IPlace) => void;
   onTagAdd: (item: IPlace, tagId: string) => void;
   onTagRemove: (item: IPlace, tagId: string) => void;
